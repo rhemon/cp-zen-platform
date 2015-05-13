@@ -24,6 +24,7 @@ require('./services/cd-charter-service');
 require('./services/cd-dojo-service');
 require('./services/geocoder-service');
 require('./services/cd-countries-service');
+require('./services/cd-profiles-service');
 
 require('./controllers/login-controller');
 require('./controllers/header-controller');
@@ -38,6 +39,7 @@ require('./controllers/manage-dojo-controller');
 require('./controllers/stats-controller');
 require('./controllers/champion-onboarding-controller');
 require('./controllers/start-dojo-wizard-controller');
+require('./controllers/review-champion-application-controller');
 
 require('./services/alert-service');
 require('./services/spinner-service');
@@ -49,10 +51,9 @@ require('./directives/country-select');
 //--Dojo Wizard Directives--//
 require('./directives/cd-register-account');
 require('./directives/cd-champion-registration');
-require('./directives/cd-gather-team');
-require('./directives/cd-find-venue');
-require('./directives/cd-plan-dojo-content');
 require('./directives/cd-dojo-listing');
+require('./directives/cd-charter');
+require('./directives/cd-setup-your-dojo');
 //--//
 
 function cdDashboardCtrl($scope, auth) {
@@ -192,6 +193,11 @@ app
           gmap:gmap
         },
         controller:'start-dojo-wizard-controller'
+      })
+      .state("review-champion-application", {
+        url: "/dashboard/champion-applications/:id",
+        templateUrl: '/champion/template/review-application',
+        controller: 'review-champion-application-controller'
       });
       $urlRouterProvider.when('/dashboard', '/dashboard/dojo-list');
   })

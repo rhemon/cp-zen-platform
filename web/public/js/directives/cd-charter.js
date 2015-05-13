@@ -1,10 +1,10 @@
 ;(function() {
   'use strict';
 
-function cdPlanDojoContent(){
+function cdCharter(){
     return {
       restrict: 'E',
-      templateUrl: '/dojos/template/start-dojo-wizard/step-five-plan-dojo-content',
+      templateUrl: '/charter/template/index',
       link: function (scope, element, attrs) { 
        
       }
@@ -13,6 +13,6 @@ function cdPlanDojoContent(){
 
 angular
     .module('cpZenPlatform')
-    .directive('cdPlanDojoContent', cdPlanDojoContent)
+    .directive('cdCharter', cdCharter)
  
 }());

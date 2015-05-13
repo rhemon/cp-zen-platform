@@ -1,4 +1,4 @@
-<div id="main">
+<div id="main" ng-show="championRegistrationFormVisible">
   <div class="cd-create-dojo-container">
     <form id="createChampionForm" novalidate angular-validator angular-validator-submit="save(champion)" name="createChampionForm">
       <div id="main">
@@ -49,13 +49,15 @@
         <div class="row">
           <div class="form-group">
             <label for="championCountry" class="col-lg-4">Country*</label>
-            <div class="col-lg-6">
-              <ui-select ng-model="champion.country" on-select="setCountry(champion, $item)" required required-message="'Select a country'" >
+            <div class="col-lg-6" ng-class="{'has-error': createChampionForm.$submitted && createChampionForm.country.$error.required}">
+              <ui-select name="country" ng-model="champion.country" on-select="setCountry(champion, $item)" required>
                 <ui-select-match placeholder="Select or search a country in the list...">{{ $select.selected.countryName }}</ui-select-match>
                 <ui-select-choices repeat="country in countries | filter: { countryName: $select.search }">
                   <span ng-bind-html="country.countryName | highlight: $select.search"></span>
                 </ui-select-choices>
               </ui-select>
+              <label class="control-label has-error validationMessage"
+                ng-show="createChampionForm.$submitted && createChampionForm.country.$error.required">Select a country</label>
             </div>
           </div>
         </div>
@@ -63,8 +65,9 @@
         <div class="row">
           <div class="form-group">
             <label for="championPlace" class="col-lg-4">City/Town*</label>
-            <div class="col-lg-6">
-              <ui-select ng-model="champion.place" on-select="setPlace(champion, $item)" required required-message="'Select a place'">
+
+            <div class="col-lg-6" ng-class="{'has-error': createChampionForm.$submitted && createChampionForm.place.$error.required}">
+              <ui-select name="place" ng-model="champion.place" on-select="setPlace(champion, $item)" required>
                 <ui-select-match placeholder="Select or search a place in the list...">{{ $select.selected.nameWithHierarchy }}</ui-select-match>
                 <ui-select-choices repeat="place in places"
                     refresh="getPlaces(champion.country.alpha2, $select.search)"
@@ -72,12 +75,15 @@
                   <span ng-bind-html="place.nameWithHierarchy | highlight: $select.search"></span>
                 </ui-select-choices>
               </ui-select>
+              <label class="control-label has-error validationMessage"
+                     ng-show="createChampionForm.$submitted && createChampionForm.place.$error.required">Select a place</label>
             </div>
           </div>
         </div>
 
         <legend>Experience</legend>
         <div class="row">
+
           <div class="form-group">
             <label class="col-lg-4">Languages Spoken</label>
             <div class="col-lg-6">
@@ -92,9 +98,8 @@
           </div>
         </div>
 
-
-        <div class="row">
           <label for="projects" class="col-lg-3">Technical Experience</label><br />
+
           <div class="col-lg-6 col-lg-offset-4">
             <textarea name="projects" class="form-control" placeholder="Please describe any websites, apps or open source work that you have done." rows="5" ng-model="champion.projects"></textarea>
           </div>
@@ -120,29 +125,6 @@
         </div>
 
         <legend>Other</legend>
-        <div class="row">
-          <label class="col-lg-4">Prerequisites</label>
-          <div class="col-lg-6">
-
-            <div class="checkbox checkbox-primary">
-              <input type="checkbox" name="hasTechnicalMentors" id="hasTechnicalMentors" required required-message="'You must check this box before continuing.'" ng-model="champion.hasTechnicalMentorsAccess">
-              <label for="hasTechnicalMentors">
-                I have access to Technical Mentors
-              </label>
-            </div>
-            <textarea class="form-control" ng-show="champion.hasTechnicalMentorsAccess === true" ng-model="champion.technicalMentorsDescription" rows="5" placeholder="Please give more information about your technical mentors team."></textarea>
-
-            <div class="checkbox checkbox-primary">
-              <input type="checkbox" name="hasVenue" id="hasVenue" required required-message="'You must check this box before continuing.'" ng-model="champion.hasVenueAccess">
-              <label for="hasVenue">
-                I have access to a Venue
-              </label>
-            </div>
-            <textarea class="form-control venueInfoTextArea" ng-show="champion.hasVenueAccess === true" ng-model="champion.venueDescription" rows="5" placeholder="Please give more information about your venue."></textarea>
-
-          </div>
-        </div>
-
         <div class="row">
           <label for="projects" class="col-lg-3">Notes</label><br />
           <div class="col-lg-6 col-lg-offset-4">
