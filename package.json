@@ -39,7 +39,7 @@
     "optimist": "0.6.1",
     "po2json": "^0.4.1",
     "request": "2.55.0",
-    "seneca": "0.6.1",
+    "seneca": "git://github.com/rjrodger/seneca.git",`
     "seneca-auth": "0.2.10",
     "seneca-ng-web": "git://github.com/iantocristian/seneca-ng-web.git",
     "seneca-postgresql-store": "git://github.com/iantocristian/seneca-postgresql-store.git",
