@@ -14,10 +14,6 @@ module.exports = function (router) {
     res.render('index');
   });
 
-  router.get('/create-dojo', function (req, res) {
-    res.render('index');
-  });
-
   router.get('/start-dojo', function (req, res) {
     res.render('index');
   });
