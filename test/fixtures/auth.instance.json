@@ -1,0 +1,40 @@
+{
+  "user": {
+    "id": "561894d7-6c80-4340-9526-d6454e115313",
+    "nick": "manager@example.com",
+    "email": "manager@example.com",
+    "name": "Manager",
+    "username": null,
+    "activated": null,
+    "level": null,
+    "mysqlUserId": null,
+    "firstName": null,
+    "lastName": null,
+    "roles": ["cdf-admin"],
+    "phone": null,
+    "mailingList": 0,
+    "termsConditionsAccepted": null,
+    "when": "2015-06-05T12:55:40.424Z",
+    "confirmed": null,
+    "admin": null,
+    "modified": null,
+    "locale": null,
+    "banned": null,
+    "banReason": null,
+    "password": "test" // added manually, other data is generated
+  },
+  "login": {
+    "id": "0bd17d63-a29e-4a6b-a99e-95ab67ecf053",
+    "nick": "manager@example.com",
+    "email": "manager@example.com",
+    "user": "561894d7-6c80-4340-9526-d6454e115313",
+    "when": "2015-06-16T10:11:16.596Z",
+    "why": "password",
+    "token": "0bd17d63-a29e-4a6b-a99e-95ab67ecf053",
+    "active": true,
+    "auto": null,
+    "ended": null
+  },
+  "ok": true,
+  "httpredirect$": "/"
+}

@@ -11,18 +11,20 @@ window.seneca = {
   }
 };
 
-window.initBackend = function($httpBackend, target){
+window.initBackend = function($httpBackend, target, res){
   if (!target) {
     console.log('WARNING unresolved target for initBackend')
     return
   }
+
+  if (!res) res = {};
   
   var targets = [];
   if (typeof target === 'string') targets.push(target);
   else targets = target;
 
   _.each(targets, function(target){
-    $httpBackend.when('GET', target).respond({});
+    $httpBackend.when('GET', target).respond(res);
     $httpBackend.expectGET(target);
   })
 }
@@ -36,8 +38,11 @@ window.logf= function(msg){
 window.stubAll = function(args){
   var map      = args.map,
       sandbox  = args.sandbox,
-      no_yield = args.no_yield;
+      no_yield = args.no_yield,
+      no_stub  = args.no_stub;
+      
   if (!no_yield) no_yield = [];
+  if (!no_stub)  no_stub  = [];
 
   var services = {},
       stubs    = {};
@@ -57,9 +62,11 @@ window.stubAll = function(args){
         if (!stubs[service_name]) stubs[service_name] = {};
         if (!stubs[service_name][func_name]) stubs[service_name][func_name] = {};
 
-        stubs[service_name][func_name] = sandbox.stub(services[service_name], func_name);
-        if (no_yield.indexOf(func_name) === -1) stubs[service_name][func_name].yields({});
-        // else console.log('omitting ' + func_name)
+        if (no_stub.indexOf(func_name) === -1) {
+          stubs[service_name][func_name] = sandbox.stub(services[service_name], func_name);
+          if (no_yield.indexOf(func_name) === -1) stubs[service_name][func_name].yields({});
+          // else console.log('omitting ' + func_name)
+        }
       }
     });
   });
