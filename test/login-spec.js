@@ -7,8 +7,7 @@ describe('login-controller', function() {
       sandbox,
       $httpBackend,
       services,
-      stubs,
-      expected;
+      stubs;
 
   var auth_instance;
 
@@ -82,7 +81,7 @@ describe('login-controller', function() {
     sandbox.restore();
   });
 
-  it('core setup', function() {
+  it('init', function() {
     // verify calls
     expect(stubs.auth.register.callCount).to.equal(0,     logf('auth.register.callCount'));
     expect(stubs.auth.login.callCount).to.equal(0,        logf('auth.login.callCount'));

@@ -11,6 +11,18 @@ window.seneca = {
   }
 };
 
+window.Google = function(sandbox) {
+  return {
+    maps: {
+      LatLng: sandbox.stub(),
+      MapTypeId: {
+        ROADMAP: 'roadmap'
+      },
+      Marker: sandbox.stub()
+    }
+  }
+}
+
 window.initBackend = function($httpBackend, target, res){
   if (!target) {
     console.log('WARNING unresolved target for initBackend')
