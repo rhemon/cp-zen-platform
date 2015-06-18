@@ -1,22 +1,14 @@
 'use strict';
 
 describe('stats-controller', function() {
-
-  var scope,
-      ctrl,
-      sandbox,
-      $httpBackend,
-      services, // contains refs to implementations
-      stubs, // contains stubs of these
-      expected;
+  logf_path = __filename;
 
   beforeEach(function() {
-    window.logf_path = __filename;
-    sandbox = sinon.sandbox.create();
+    window.sandbox = sinon.sandbox.create();
     angular.mock.module('cpZenPlatform')
 
     fixture.setBase('test/fixtures')
-    expected = fixture.load('countries.json');
+    window.expected = fixture.load('countries.json');
   })
 
   beforeEach(inject(function(
@@ -30,14 +22,14 @@ describe('stats-controller', function() {
     _cdDojoService_,
     _cdCountriesService_
   ) {
-    $httpBackend = _$httpBackend_;
+    window.$httpBackend = _$httpBackend_;
 
     // Ref: https://github.com/angular/angular.js/issues/11373
     _$browser_['cookies'] = function() {
       return {};
     };
 
-    scope = $rootScope.$new();
+    window.scope = $rootScope.$new();
 
     // for each service, find all functions and stub them
     var map = {
@@ -48,14 +40,14 @@ describe('stats-controller', function() {
       cdCountries: _cdCountriesService_
     };
     var res = stubAll({map: map, sandbox: sandbox}); // stubAll() defined in util/globals.js
-    services = res.services;
-    stubs = res.stubs;
+    window.services = res.services; // contains refs to implementations(stubs override these)
+    window.stubs = res.stubs; // contains stubs of services
     // specific:
     stubs.cdAgreements.count.yields(7);
     stubs.cdDojo.getStats.yields(expected.stats);
     stubs.cdCountries.getContinentCodes.yields(expected.continent_codes);
 
-    ctrl = $controller('stats-controller', {
+    window.ctrl = $controller('stats-controller', {
       $scope: scope,
       alertService: services.alert,
       auth: services.auth,
@@ -76,16 +68,16 @@ describe('stats-controller', function() {
     scope.$apply();
 
     // verify calls
-    expect(stubs.alert.showError.callCount).to.equal(0,               logf('alert.showError.callCount'));
-    expect(stubs.auth.get_loggedin_user.callCount).to.equal(1,        logf('auth.get_loggedin_user.callCount'));
-    expect(stubs.cdAgreements.count.callCount).to.equal(1,            logf('cdAgreements.count.callCount'));
-    expect(stubs.cdDojo.getStats.callCount).to.equal(1,               logf('cdDojo.getStats.callCount'));
-    expect(stubs.cdCountries.getContinentCodes.callCount).to.equal(1, logf('cdCountries.getContinentCodes.callCount'));
+    expect(that('stubs.alert.showError.callCount')).to.equal(0, elog);
+    expect(that('stubs.auth.get_loggedin_user.callCount')).to.equal(1, elog);
+    expect(that('stubs.cdAgreements.count.callCount')).to.equal(1, elog);
+    expect(that('stubs.cdDojo.getStats.callCount')).to.equal(1, elog);
+    expect(that('stubs.cdCountries.getContinentCodes.callCount')).to.equal(1, elog);
 
     // verify scope changes
-    expect(scope.count).to.be.equal(7,                                           logf('scope.count'));
-    expect(scope.dojos).to.deep.equal(expected.stats,                            logf('scope.dojos'));
-    expect(scope.totals).to.deep.equal(expected.totals,                          logf('scope.totals'));
-    expect(scope.continentMap).to.deep.equal(_.invert(expected.continent_codes), logf('scope.continentMap'));
+    expect(that('scope.count')).to.be.equal(7, elog);
+    expect(that('scope.dojos')).to.deep.equal(expected.stats, elog);
+    expect(that('scope.totals')).to.deep.equal(expected.totals, elog);
+    expect(that('scope.continentMap')).to.deep.equal(_.invert(expected.continent_codes), elog);
   });
 });

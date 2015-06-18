@@ -1,17 +1,10 @@
 'use strict';
 
 describe('review-champion-application-controller', function() {
-
-  var scope,
-      ctrl,
-      sandbox,
-      $httpBackend,
-      services,
-      stubs;
+  logf_path = __filename;
 
   beforeEach(function() {
-    window.logf_path = __filename;
-    sandbox = sinon.sandbox.create();
+    window.sandbox = sinon.sandbox.create();
     angular.mock.module('cpZenPlatform')
   })
 
@@ -22,19 +15,19 @@ describe('review-champion-application-controller', function() {
     _$httpBackend_,
     _cdDojoService_
   ) {
-    $httpBackend = _$httpBackend_;
+    window.$httpBackend = _$httpBackend_;
 
     // Ref: https://github.com/angular/angular.js/issues/11373
     _$browser_['cookies'] = function() {
       return {};
     }
 
-    scope = $rootScope.$new();
+    window.scope = $rootScope.$new();
 
-    services = {};
+    window.services = {};
     services.cdDojo = _cdDojoService_;
 
-    stubs = {
+    window.stubs = {
       cdDojo: {}
     };
     stubs.cdDojo.loadDojoLead = sandbox.stub(services.cdDojo, 'loadDojoLead');
@@ -48,7 +41,7 @@ describe('review-champion-application-controller', function() {
       }
     });
 
-    ctrl = $controller('review-champion-application-controller', {
+    window.ctrl = $controller('review-champion-application-controller', {
       $scope: scope,
       $state: {
         params: {
@@ -65,12 +58,12 @@ describe('review-champion-application-controller', function() {
 
   it('load dojo lead', function() {
     // verify calls
-    expect(stubs.cdDojo.loadDojoLead.callCount).to.equal(1, logf('cdDojo.loadDojoLead'));
+    expect(that('stubs.cdDojo.loadDojoLead.callCount')).to.equal(1, elog);
 
     // verify scope changes
-    var ca = scope.championApplication;
-    expect(ca.dateOfBirth).to.equal('01/01/2015',           logf('championApplication.dateOfBirth'));
-    expect(ca.hasTechnicalMentorsAccess).to.equal('Yes',    logf('championApplication.hasTechnicalMentorsAccess'));
-    expect(ca.hasVenueAccess).to.equal('No',                logf('championApplication.hasVenueAccess'));
+    window.ca = scope.championApplication;
+    expect(that('ca.dateOfBirth')).to.equal('01/01/2015', elog);
+    expect(that('ca.hasTechnicalMentorsAccess')).to.equal('Yes', elog);
+    expect(that('ca.hasVenueAccess')).to.equal('No', elog);
   });
 });

@@ -41,9 +41,30 @@ window.initBackend = function($httpBackend, target, res){
   })
 }
 
+// Debugging
+window.elog;
 window.logf_path;
 window.logf= function(msg){
   return (logf_path + ': @' + msg);
+}
+
+// obtains value and populates debug variable.
+// browserify/mocha messes up scopes and even native functions
+// therefore an additional variable is required
+window.logscope;
+window.that = function(fields){
+  window.elog = logf(fields);
+
+  fields = fields.split('.');
+  var current = window;
+  var chain = '';
+  _.each(fields, function(field){
+    if (chain === '') chain = field;
+    else chain += '.' + field;
+    if (current[field] === undefined) throw new Error(elog + ': ' + chain + ' is undefined');
+    current = current[field];
+  });
+  return current;
 }
 
 // for each service, find all functions and stub them
