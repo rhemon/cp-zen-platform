@@ -60,7 +60,7 @@ function startDojoWizardCtrl($scope, $http, $window, $state, $stateParams, $loca
           //Check if user has deleted the Dojo
           cdDojoService.find({dojoLeadId: uncompletedDojoLead.id}, function (response) {
             if (!_.isEmpty(response)) {
-              $state.go('home',
+              $state.go('dojo-list',
                 { bannerType:'success',
                   bannerMessage: 'Your first Dojo application is awaiting verification. You can create a second Dojo after it has been verified.<br> ' +
                   'If you need help completing your initial Dojo application, please contact us at <a class="a-no-float" href="mailto:info@coderdojo.org">info@coderdojo.org</a>',
@@ -127,7 +127,9 @@ function startDojoWizardCtrl($scope, $http, $window, $state, $stateParams, $loca
     // temp fix
     if(currentStepInt === 3) {
       $scope.getLocationFromAddress($scope.dojo);
-      $scope.dojo.coordinates = $scope.dojo.place.latitude + ', ' + $scope.dojo.place.longitude;
+      if($scope.dojo.place) {
+        $scope.dojo.coordinates = $scope.dojo.place.latitude + ', ' + $scope.dojo.place.longitude;
+      }
     }
 
     if(form.$invalid){
@@ -183,13 +185,22 @@ function startDojoWizardCtrl($scope, $http, $window, $state, $stateParams, $loca
     return false;
   }
 
-  $scope.getPlaces = Geocoder.handlers.getPlaces($scope); 
+  $scope.getPlaces = function (countryCode, $select) {
+    return utilsService.getPlaces(countryCode, $select).then(function (data) {
+      $scope.places = data;
+    }, function (err) {
+      $scope.places = [];
+      console.error(err);
+    });
+  }
 
   //--Step One:
   function setupStep1() {
+    $scope.registerUser = {initUserType:{name:'champion', title:'Champion'}};
     $scope.hideIndicators = true;
     currentStepInt = 0;
     WizardHandler.wizard().goTo(0);
+    $scope.onStartDojoWizard = true;
     $scope.stepFinishedLoading = true;
   }
   //--
@@ -449,12 +460,6 @@ function startDojoWizardCtrl($scope, $http, $window, $state, $stateParams, $loca
     };
 
     $scope.save = function(dojo) {
-      // handle glitchy booleans (db issue)
-      _.each(['mailingList', 'private', 'needMentors'], function(field) {
-        if (dojo[field] === true) dojo[field] = 1
-          else dojo[field] = 0;
-      });
-
       _.each(sanitizeCdForms.editDojo, function(item, i) {
         if(_.has(dojo, item)) {
           dojo[item] = $sanitize(dojo[item]);
@@ -522,6 +527,7 @@ function startDojoWizardCtrl($scope, $http, $window, $state, $stateParams, $loca
 
     $scope.getLocationFromAddress = function(obj) {
       if(obj && obj.place) {
+        if(!obj.placeName) return alertService.showAlert($translate.instant('Please add your location manually by clicking on the map.'));
         var address = obj.placeName;
         for (var adminidx=4; adminidx >= 1; adminidx--) {
           if (obj['admin'+adminidx+'Name']) {

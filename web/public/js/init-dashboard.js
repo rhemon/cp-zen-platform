@@ -49,7 +49,7 @@
     }
     return dfd.promise;
   };
-  
+
   var failCb = function(err){
     return {err: err};
   };
@@ -123,6 +123,11 @@
           resolve: {
             gmap: gmap
           },
+          params: {
+            bannerType: null,
+            bannerMessage: null,
+            bannerTimeCollapse: null
+          },
           controller: 'dojo-list-controller'
         })
         .state("my-dojos", {
@@ -133,19 +138,12 @@
             label: '{{myDojosPageTitle}}'
           }
         })
-        .state("create-dojo", {
-          url: "/dashboard/create-dojo",
-          templateUrl: '/dojos/template/edit-dojo',
-          resolve: {
-            gmap: gmap
-          },
-          controller: 'create-dojo-controller'
-        })
         .state("edit-dojo", {
           url: "/dashboard/edit-dojo/:id",
           templateUrl: '/dojos/template/edit-dojo',
           resolve: {
-            gmap: gmap
+            gmap: gmap,
+            currentUser: resolves.loggedInUser
           },
           controller: 'edit-dojo-controller'
         })
@@ -244,6 +242,9 @@
           controller: 'manage-dojo-users-controller',
           ncyBreadcrumb: {
             label: '{{manageDojoUsersPageTitle}}'
+          },
+          resolve: {
+            initUserTypes: resolves.initUserTypes
           }
         })
 		    .state("setup-dojo", {
@@ -315,10 +316,10 @@
           templateUrl: '/dojos/template/badges/accept'
         })
         .state('error-404', {
-          url:'/404',
+          url:'/dashboard/404',
           templateUrl: '/errors/template/404'
         });
-      $urlRouterProvider.otherwise('/404');
+      $urlRouterProvider.otherwise('/dashboard/404');
     })
     .config(function(paginationConfig) {
       paginationConfig.maxSize = 5;
@@ -371,7 +372,7 @@
                 }, function (err) {
                   alertService.showError($translate.instant('An error has occured verifying your profile.'));
                 });
-              } 
+              }
             }
           }, function (err) {
             alertService.showError($translate.instant('An error has occured verifying the charter agreement.'))
