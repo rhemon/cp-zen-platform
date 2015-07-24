@@ -183,53 +183,7 @@ function startDojoWizardCtrl($scope, $http, $window, $state, $stateParams, $loca
     return false;
   }
 
-  $scope.getPlaces = function(countryCode, search) {
-    if (!countryCode || !search.length || search.length < 3) {
-      $scope.places = [];
-      return;
-    }
-
-    var query = {
-      query: {
-        filtered: {
-          query: {
-            multi_match: {
-              query: search,
-              type: "phrase_prefix",
-              fields: ['name', 'asciiname', 'alternatenames', 'admin1Name', 'admin2Name', 'admin3Name', 'admin4Name']
-            }
-          },
-          filter: {
-            bool: {
-              must: [
-                {
-                  term: {
-                    countryCode: countryCode
-                  }
-                },
-                {
-                  term: {
-                    featureClass: "P"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      },
-      from: 0,
-      size: 100,
-      sort: [
-        { asciiname: "asc" }
-      ]
-    };
-
-    cdCountriesService.listPlaces(query, function(result) {
-      $scope.places = _.map(result, function(place) {
-        return _.omit(place, 'entity$');
-      });
-    }, console.error.bind(console));
-  };
+  $scope.getPlaces = Geocoder.handlers.getPlaces($scope); 
 
   //--Step One:
   function setupStep1() {

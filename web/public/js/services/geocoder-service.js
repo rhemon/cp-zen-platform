@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('cpZenPlatform').factory('Geocoder', function ($localStorage, $q, $timeout) {
+function Geocoder ($localStorage, $q, $timeout, cdCountriesService) {
   var locations = $localStorage.locations ? JSON.parse($localStorage.locations) : {};
 
   var queue = [];
@@ -145,6 +145,59 @@ angular.module('cpZenPlatform').factory('Geocoder', function ($localStorage, $q,
         }
       });
       return d.promise
+    },
+    handlers: {
+      getPlaces: function ($scope) {
+        return function (countryCode, search) {
+          if (!countryCode || !search.length || search.length < 3) {
+            $scope.places = [];
+            return;
+          }
+
+          var query = {
+            query: {
+              filtered: {
+                query: {
+                  multi_match: {
+                    query: search,
+                    type: "phrase_prefix",
+                    fields: ['name', 'asciiname', 'alternatenames', 'admin1Name', 'admin2Name', 'admin3Name', 'admin4Name']
+                  }
+                },
+                filter: {
+                  bool: {
+                    must: [
+                      {
+                        term: {
+                          countryCode: countryCode
+                        }
+                      },
+                      {
+                        term: {
+                          featureClass: "P"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            from: 0,
+            size: 100,
+            sort: [
+              { asciiname: "asc" }
+            ]
+          };
+
+          cdCountriesService.listPlaces(query, function(result) {
+            $scope.places = _.map(result, function(place) {
+              return _.omit(place, 'entity$');
+            });
+          }, console.error.bind(console));
+        }
+      }
     }
   };
-});
+}
+
+angular.module('cpZenPlatform').factory('Geocoder', ['$localStorage', '$q', '$timeout', 'cdCountriesService', Geocoder]);
