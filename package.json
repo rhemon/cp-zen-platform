@@ -47,7 +47,8 @@
     "requireindex": "1.1.0",
     "hapi-less": "0.1.1",
     "hapi-seneca": "git://github.com/wprl/hapi-seneca.git#e552d33b48a897e902ce8e84fd769d5b47ac28ae",
-    "serve-static": "1.4.0"
+    "serve-static": "1.4.0",
+    "request": "2.60.0"
   },
   "devDependencies": {
     "bower": "1.4.1",

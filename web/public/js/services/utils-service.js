@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cpZenPlatform').factory('utilsService', ['cdCountriesService', '$q', function(cdCountriesService, $q) {
+function utilsService (cdCountriesService, $q, $http) {
   var utils = {};
 
   utils.toTags = function(values){
@@ -89,62 +89,38 @@ angular.module('cpZenPlatform').factory('utilsService', ['cdCountriesService', '
   utils.getPlaces = function (countryCode, $select) {
     var deferred = $q.defer();
     var search = $select.search;
-    var places = [];
     
     if (!countryCode || !search.length || search.length < 3) {
-      deferred.resolve(places);
+      deferred.resolve([]);
     } else {
-      var query = {
-        query: {
-          filtered: {
-            query: {
-              multi_match: {
-                query: search,
-                type: "phrase_prefix",
-                fields: ['name', 'asciiname', 'alternatenames', 'admin1Name', 'admin2Name', 'admin3Name', 'admin4Name']
-              }
-            },
-            filter: {
-              bool: {
-                must: [
-                  {
-                    term: {
-                      countryCode: countryCode
-                    }
-                  },
-                  {
-                    term: {
-                      featureClass: "P"
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        from: 0,
-        size: 100,
-        sort: [
-          { asciiname: "asc" }
-        ]
-      };
-
-      cdCountriesService.listPlaces(query, function (result) {
-        places = _.map(result, function(place) {
-          return _.omit(place, 'entity$');
-        });
-        if(_.isEmpty(places)) {
-          if($select.search && !$select.clickTriggeredSelect) {
-            places.push({nameWithHierarchy: $select.search});
-          }
+      var request = $http({
+        method: 'GET',
+        url: 'http://localhost:8000/maps/places', // TODO get from config or make the whole thing a seneca cmd
+        params: { 
+          country: countryCode,
+          q: search
         }
-        deferred.resolve(places);
-      }, function (err) {
-        deferred.reject(err);
+      });
+
+      request.error(function () {
+        deferred.reject([]);
+      });
+
+      request.success(function (places) {
+        if(_.isEmpty(places) && $select.search && !$select.clickTriggeredSelect) {
+          places.push($select.search);
+        }
+
+        deferred.resolve(_.map(places, function (place) {
+          return { nameWithHierarchy: place };
+        }));
       });
     }
+
     return deferred.promise;
   }
 
   return utils;
-}]);
+}
+
+angular.module('cpZenPlatform').factory('utilsService', ['cdCountriesService', '$q', '$http', utilsService]);

@@ -66,6 +66,10 @@ module.exports = _.defaults({
   redis: {
     "host": process.env.DOCKER_HOST_IP || process.env.TARGETIP || '127.0.0.1',
     "port": 6379 // this isn't optioned
+  },
+
+  maps: {
+    googleApiKey: 'AIzaSyAVpFY4RhiToPlWkCHjCal1fyfiU-ClFHw'
   }
 
 }, base);
