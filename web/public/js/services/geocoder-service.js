@@ -2,7 +2,7 @@
 
 'use strict';
 
-function Geocoder ($localStorage, $q, $timeout, cdCountriesService) {
+angular.module('cpZenPlatform').factory('Geocoder', function ($localStorage, $q, $timeout) {
   var locations = $localStorage.locations ? JSON.parse($localStorage.locations) : {};
 
   var queue = [];
@@ -147,6 +147,4 @@ function Geocoder ($localStorage, $q, $timeout, cdCountriesService) {
       return d.promise
     }
   };
-}
-
-angular.module('cpZenPlatform').factory('Geocoder', ['$localStorage', '$q', '$timeout', 'cdCountriesService', Geocoder]);
+});
