@@ -140,7 +140,25 @@
         is: function () { return true; }
       });
       $stateProvider
-        .state("home", {
+        .state("handle-lang", {
+          url: "/",
+          controller: function($translate, $state) {
+            var lang = $translate.proposedLanguage() || $translate.fallbackLanguage();
+            $state.go('lang.home', {
+              lang: lang
+            })
+          }
+        })
+        .state("lang", {
+          abstract: true,
+          url: "/{lang:(?:it|en)}",
+          controller: function($stateParams, $translate) {
+            $translate.use($stateParams.lang);
+          },
+        
+          template: '<ui-view/>'
+        })
+        .state("lang.home", {
           url: "/",
           templateUrl: '/dojos/template/dojos-map',
           resolve: {
@@ -153,7 +171,7 @@
           },
           controller: 'dojos-map-controller'
         })
-        .state("login", {
+        .state("lang.login", {
           url: "/login?referer",
           templateUrl: '/templates/login',
           controller: 'login',
@@ -162,7 +180,7 @@
             pageTitle: 'Login'
           }
         })
-        .state("reset-password", {
+        .state("lang.reset-password", {
           url: "/reset_password/:token",
           templateUrl: '/templates/reset_password',
           controller: 'login',
@@ -170,7 +188,7 @@
             pageTitle: 'Reset Password'
           }
         })
-        .state("register-account", {
+        .state("lang.register-account", {
           url: "/register",
           templateUrl: '/dojos/template/start-dojo-wizard/step-one-register',
           params: {
@@ -179,7 +197,7 @@
           },
           controller: 'login'
         })
-        .state("dojo-list-index", {
+        .state("lang.dojo-list-index", {
           url: "/dojo-list-index",
           templateUrl: '/dojos/template/dojo-list-index',
           controller: 'dojo-list-index-controller',
@@ -187,7 +205,7 @@
             pageTitle: 'Dojo List'
           }
         })
-        .state("dojo-detail", {
+        .state("lang.dojo-detail", {
           url: "/dojo/{country:[a-zA-Z]{2}}/{path:nonURIEncoded}",
           templateUrl: '/dojos/template/dojo-detail',
           resolve: {
@@ -200,7 +218,7 @@
           },
           controller: 'dojo-detail-controller'
         })
-        .state("dojo-detail-alt", {
+        .state("lang.dojo-detail-alt", {
           url: "/dojo/:legacyId",
           templateUrl: '/dojos/template/dojo-detail',
           resolve: {
@@ -210,7 +228,7 @@
           },
           controller: 'dojo-detail-controller'
         })
-        .state("start-dojo", {
+        .state("lang.start-dojo", {
           url: "/start-dojo",
           templateUrl: '/dojos/template/start-dojo-wizard/wizard',
           params:{
@@ -222,7 +240,7 @@
           },
           controller: 'start-dojo-wizard-controller'
         })
-        .state("terms-and-conditions", {
+        .state("lang.terms-and-conditions", {
           url: "/terms-and-conditions",
           templateUrl: '/templates/terms-and-conditions',
           controller: 'terms-and-conditions-controller',
@@ -230,14 +248,14 @@
             pageTitle: 'Terms & Conditions',
           }
         })
-        .state('charter',{
+        .state('lang.charter',{
           url: '/charter',
           templateUrl: '/charter/template/charter-info',
           params: {
             pageTitle: 'Charter',
           }
         })
-        .state("user-profile", {
+        .state("lang.user-profile", {
           url: "/profile/:userId",
           templateUrl: '/dojos/template/user-profile',
           resolve: profileHelpers,
@@ -246,7 +264,7 @@
             pageTitle: 'Profile',
           }
         })
-        .state('badges-dashboard', {
+        .state('lang.badges-dashboard', {
           url:'/badges',
           controller:'badges-dashboard-controller',
           templateUrl: '/dojos/template/badges/index',
@@ -254,14 +272,14 @@
             pageTitle: 'Badges',
           }
         })
-        .state('error-404-no-headers', {
+        .state('lang.error-404-no-headers', {
           url:'/404',
           templateUrl: '/errors/template/404_no_headers',
           params: {
             pageTitle: 'Page not found',
           }
         })
-        .state('error-404', {
+        .state('lang.error-404', {
           url:'/404',
           templateUrl: '/errors/template/404',
           params: {
