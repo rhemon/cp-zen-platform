@@ -155,7 +155,7 @@
           controller: function($stateParams, $translate) {
             $translate.use($stateParams.lang);
           },
-        
+
           template: '<ui-view/>'
         })
         .state("lang.home", {
