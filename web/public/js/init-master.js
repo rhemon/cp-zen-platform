@@ -153,6 +153,15 @@
           },
           controller: 'dojos-map-controller'
         })
+        .state("login", {
+          url: "/login?referer",
+          templateUrl: '/templates/login',
+          controller: 'login',
+          params: {
+            referer: null,
+            pageTitle: 'Login'
+          }
+        })
         .state("dojo-list-index", {
           url: "/dojo-list-index",
           templateUrl: '/dojos/template/dojo-list-index',
