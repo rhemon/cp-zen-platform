@@ -12,6 +12,8 @@
       <a ng-click="goTo('home')" ><span ng-class="{'cd-active-tab': isSelected('dojo-list')}"
                               class="cd-header-button cd-color-1">
         {@i18n key="Find a Dojo"/}</span></a>
+      <a><span ng-click="adultForums()" class="cd-header-button cd-color-4">
+        {@i18n key="Forum"/}</span></a>
       <a target="_blank" href="http://kata.coderdojo.com/wiki/Main_Page"><span class="cd-header-button cd-color-6">{@i18n key="Resources"/}</span></a>
     </span>
     <span class="cd-logo-container">
