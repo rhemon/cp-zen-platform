@@ -3,15 +3,6 @@
   <div class="dojo-list-dashboard">
     <div class="col-xs-12 col-lg-4 pull-right">
       <div class="widget">
-        <legend>{@i18n key="Register a Dojo"/}</legend>
-        <p>{@i18n key="To register a Dojo you first need an account. Sign up here:"/}</p>
-        <span class="col-xs-1"></span>
-        <a ui-sref="start-dojo">
-          <input type="button" class="col-xs-5 btn btn-primary pull-right" value="{@i18n key="Register"/}">
-        </a>
-      </div>
-      <br>
-      <div class="widget">
         <legend>{@i18n key="Dojos"/}</legend>
         <p>{@i18n key="The Dojos listed here are all verified by the CoderDojo team."/} <a href="http://kata.coderdojo.com/index.php?title=Unverified_Dojo_Listing" target="_blank">{@i18n key="Learn More"/}</a></p>
       </div>

@@ -253,15 +253,15 @@ server.register(cdUsers, function (err) {
   checkHapiPluginError('users')(err);
 });
 
-var charter = require('../lib/charter.js');
-server.register(charter, function (err) {
-  checkHapiPluginError('charter')(err);
-});
-
-var agreements = require('../lib/agreements.js');
-server.register(agreements, function (err) {
-  checkHapiPluginError('agreements')(err);
-});
+// var charter = require('../lib/charter.js');
+// server.register(charter, function (err) {
+//   checkHapiPluginError('charter')(err);
+// });
+//
+// var agreements = require('../lib/agreements.js');
+// server.register(agreements, function (err) {
+//   checkHapiPluginError('agreements')(err);
+// });
 
 var sys = require('../lib/sys.js');
 server.register(sys, function (err) {
@@ -273,25 +273,25 @@ server.register({register: configRoute, options: options.webclient}, function (e
   checkHapiPluginError('config')(err);
 });
 
-var oauth2 = require('../lib/oauth2.js');
-server.register(oauth2, function (err) {
-  checkHapiPluginError('oauth2')(err);
-});
-
-var profiles = require('../lib/profiles.js');
-server.register(profiles, function (err) {
-  checkHapiPluginError('profiles')(err);
-});
-
-var badges = require('../lib/badges.js');
-server.register(badges, function (err) {
-  checkHapiPluginError('badges')(err);
-});
-
-var events = require('../lib/events.js');
-server.register(events, function (err) {
-  checkHapiPluginError('events')(err);
-});
+// var oauth2 = require('../lib/oauth2.js');
+// server.register(oauth2, function (err) {
+//   checkHapiPluginError('oauth2')(err);
+// });
+//
+// var profiles = require('../lib/profiles.js');
+// server.register(profiles, function (err) {
+//   checkHapiPluginError('profiles')(err);
+// });
+//
+// var badges = require('../lib/badges.js');
+// server.register(badges, function (err) {
+//   checkHapiPluginError('badges')(err);
+// });
+//
+// var events = require('../lib/events.js');
+// server.register(events, function (err) {
+//   checkHapiPluginError('events')(err);
+// });
 
 // Locale related server method
 function formatLocaleCode (code) {
