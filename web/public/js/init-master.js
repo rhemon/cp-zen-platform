@@ -153,32 +153,6 @@
           },
           controller: 'dojos-map-controller'
         })
-        .state("login", {
-          url: "/login?referer",
-          templateUrl: '/templates/login',
-          controller: 'login',
-          params: {
-            referer: null,
-            pageTitle: 'Login'
-          }
-        })
-        .state("reset-password", {
-          url: "/reset_password/:token",
-          templateUrl: '/templates/reset_password',
-          controller: 'login',
-          params: {
-            pageTitle: 'Reset Password'
-          }
-        })
-        .state("register-account", {
-          url: "/register",
-          templateUrl: '/dojos/template/start-dojo-wizard/step-one-register',
-          params: {
-            referer:null,
-            pageTitle: 'Register'
-          },
-          controller: 'login'
-        })
         .state("dojo-list-index", {
           url: "/dojo-list-index",
           templateUrl: '/dojos/template/dojo-list-index',
@@ -210,18 +184,6 @@
           },
           controller: 'dojo-detail-controller'
         })
-        .state("start-dojo", {
-          url: "/start-dojo",
-          templateUrl: '/dojos/template/start-dojo-wizard/wizard',
-          params:{
-            referer: 'start-dojo',
-            pageTitle: 'Start a Dojo'
-          },
-          resolve: {
-            gmap: gmap
-          },
-          controller: 'start-dojo-wizard-controller'
-        })
         .state("terms-and-conditions", {
           url: "/terms-and-conditions",
           templateUrl: '/templates/terms-and-conditions',
@@ -236,30 +198,6 @@
           controller: 'privacy-statement-controller',
           params: {
             pageTitle: 'Privacy Statement',
-          }
-        })
-        .state('charter',{
-          url: '/charter',
-          templateUrl: '/charter/template/charter-info',
-          params: {
-            pageTitle: 'Charter',
-          }
-        })
-        .state("user-profile", {
-          url: "/profile/:userId",
-          templateUrl: '/dojos/template/user-profile',
-          resolve: profileHelpers,
-          controller: 'user-profile-controller',
-          params: {
-            pageTitle: 'Profile',
-          }
-        })
-        .state('badges-dashboard', {
-          url:'/badges',
-          controller:'badges-dashboard-controller',
-          templateUrl: '/dojos/template/badges/index',
-          params: {
-            pageTitle: 'Badges',
           }
         })
         .state('error-404-no-headers', {

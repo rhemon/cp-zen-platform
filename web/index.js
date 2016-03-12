@@ -177,7 +177,7 @@ server.ext('onPostAuth', function (request, reply) {
         // Otherwise, redirect to /login with referer parameter
         debug('onPostAuth', 'redirecting to /login with referer', url);
         var referer = encodeURIComponent(url);
-        return reply.redirect('/login?referer=' + url);
+        return reply.redirect('/');
       }
     }
 
