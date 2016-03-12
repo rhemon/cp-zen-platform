@@ -176,9 +176,9 @@ function loginCtrl($state, $stateParams, $scope, $rootScope, $location, $window,
             $window.location.href = $scope.redirect;
           } else {
             var user = data.user;
-            if (_.contains(user.roles, 'cdf-admin') && !$scope.referer) {
-              $scope.referer = '/dashboard/manage-dojos';
-            }
+            // if (_.contains(user.roles, 'cdf-admin') && !$scope.referer) {
+            //   $scope.referer = '/dashboard/manage-dojos';
+            // }
             $window.location.href = $scope.referer || '/dashboard/dojo-list';
           }
         } else {

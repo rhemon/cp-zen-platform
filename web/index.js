@@ -165,7 +165,7 @@ server.ext('onPostAuth', function (request, reply) {
     if (_.contains(url, profileUrl) && !request.user) {
       var userId = url.split('/')[3];
       debug('onPostAuth', 'profile redirect:', userId);
-      return reply.redirect('/profile/' + userId);
+      return reply.redirect('/dashboard/dojo-list');
     }
 
     if (_.contains(url, '/dashboard') && !_.contains(url, '/login') && !request.user) {
@@ -177,7 +177,7 @@ server.ext('onPostAuth', function (request, reply) {
         // Otherwise, redirect to /login with referer parameter
         debug('onPostAuth', 'redirecting to /login with referer', url);
         var referer = encodeURIComponent(url);
-        return reply.redirect('/');
+        return reply.redirect('/login?referrer=' + url);
       }
     }
 
@@ -273,16 +273,16 @@ server.register({register: configRoute, options: options.webclient}, function (e
   checkHapiPluginError('config')(err);
 });
 
-// var oauth2 = require('../lib/oauth2.js');
-// server.register(oauth2, function (err) {
-//   checkHapiPluginError('oauth2')(err);
-// });
-//
-// var profiles = require('../lib/profiles.js');
-// server.register(profiles, function (err) {
-//   checkHapiPluginError('profiles')(err);
-// });
-//
+var oauth2 = require('../lib/oauth2.js');
+server.register(oauth2, function (err) {
+  checkHapiPluginError('oauth2')(err);
+});
+
+var profiles = require('../lib/profiles.js');
+server.register(profiles, function (err) {
+  checkHapiPluginError('profiles')(err);
+});
+
 // var badges = require('../lib/badges.js');
 // server.register(badges, function (err) {
 //   checkHapiPluginError('badges')(err);
